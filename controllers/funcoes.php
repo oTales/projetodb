@@ -10,41 +10,76 @@ function conectar()
   }
   return $conn;
 }
-
-function verificacao($tabela,$tabela2, $nome, $senha, $setor,$id,$id2)
+function inserirnalista($nometabela, $camposTabela, $valores)
 {
   $conn = conectar();
-  $stmt = $conn->prepare("SELECT * FROM $tabela WHERE Nome=? AND senha=? INNER JOIN $tabela2 ON $tabela.$id = $tabela2.$id2 ");
-  $stmt->bindParam(1, $nome);
-  $stmt->bindParam(2, $senha);
-  $stmt->bindParam(3, $setor);
-  $stmt->execute();
+  $placeholders = rtrim(str_repeat('?,', count($valores)), ',');
+  $sql = "INSERT INTO $nometabela ($camposTabela) VALUES ($placeholders)";
+  $lista = $conn->prepare($sql);
+  $lista->execute($valores);
+  if ($lista->rowCount() > 0) {
+    return 'Cadastrado';
+  } else {
+    return 'Vazio';
+  }
+}
+function InserirFuncionario($camposTabela1, $valoresTabela1, $camposTabela2, $valoresTabela2)
+{
+  // Insere os dados na tabela de clientes
+  $conn = conectar();
+  $clienteStmt = $conn->prepare("INSERT INTO cliente ($camposTabela1) VALUES ($valoresTabela1)");
+  $clienteStmt->execute();
+
+  // Recupera o ID do cliente inserido
+  $clienteId = $conn->lastInsertId();
+
+  // Insere os dados na segunda tabela usando o ID do cliente
+  $segundaTabelaStmt = $conn->prepare("INSERT INTO funcionario ($camposTabela2, idcliente ) VALUES ($valoresTabela2, :idcliente)");
+  $segundaTabelaStmt->bindParam(':idcliente', $clienteId);
+  $segundaTabelaStmt->execute();
+}
+function verificacao($setor)
+{
+  
   switch ($setor) {
     case 1;
-      header('Location: ./administracao');
-      break;
-    case 2;
-      header('Location: ./pedreiro');
+      header('Location: ./paineldeControle.php');
       break;
     case 3;
-      header('Location: ./financeiro');
-      break;
-    case 4;
-      header('Location: ./porteiro');
+      header('Location: ./financeiro.php');
       break;
     case 5;
-      header('Location: ./Engenheiro');
+      header('Location: ./Engenheiro.php');
       break;
     case 6;
       header('Location: ./Arquiteto');
       break;
-    case 7;
-      header('Location: ./Sindico');
-      break;
-    case 8;
-      header('Location: ./segurancas');
-      break;
+  }
+}
+function excluirRegistro($id)
+{
+  $conn = conectar();
+
+  // Crie a consulta SQL DELETE
+  $sql = "DELETE FROM funcionario WHERE idfuncionario = $id"; // Substitua "tabela" pelo nome correto da tabela no banco de dados
+
+  if ($conn->query($sql) === TRUE) {
+    echo "Registro excluído com sucesso.";
+  } else {
+
+    echo "Erro ao excluir o registro: " . $conn->errorInfo();
   }
 }
 
+function mostrarItem($campos,$nometabela){
+   $conn = conectar();
+   $lista = $conn->query("SELECT $campos FROM $nometabela");
+   $lista -> execute();
+   if($lista->rowCount() > 0){
+      return $lista->fetchAll(PDO::FETCH_OBJ);
+      
+   }else{
+      return 'Vazio';
+   }
+}
 ?>
