@@ -10,21 +10,6 @@ function conectar()
   }
   return $conn;
 }
-
-function inserirnalista($nometabela, $camposTabela, $valores)
-{
-  $conn = conectar();
-  $valoresArray = explode(',', $valores); // Converter a string de valores em uma array
-  $placeholders = rtrim(str_repeat('?,', count($valoresArray)), ',');
-  $sql = "INSERT INTO $nometabela ($camposTabela) VALUES ($placeholders)";
-  $lista = $conn->prepare($sql);
-  $lista->execute($valoresArray);
-  if ($lista->rowCount() > 0) {
-    return 'Cadastrado';
-  } else {
-    return 'Vazio';
-  }
-}
 function InserirFuncionario($camposTabela1, $valoresTabela1, $camposTabela2, $valoresTabela2)
 {
   // Insere os dados na tabela de clientes
@@ -40,6 +25,17 @@ function InserirFuncionario($camposTabela1, $valoresTabela1, $camposTabela2, $va
   $segundaTabelaStmt->bindParam(':idcliente', $clienteId);
   $segundaTabelaStmt->execute();
 }
+function inserirnalista($nometabela,$camposTabela,$valores){
+   $conn = conectar();
+   $lista = $conn->prepare("INSERT INTO $nometabela($camposTabela) VALUES ($valores)");
+   $lista -> execute();
+   if($lista->rowCount() > 0){
+      return 'Cadastrado';
+    
+   }else{
+      return 'Vazio';
+   }
+  }
 function verificacao($setor)
 {
   
@@ -58,30 +54,37 @@ function verificacao($setor)
       break;
   }
 }
-function excluirRegistro($id)
+function excluirRegistro($tabela, $idtabela, $id)
 {
   $conn = conectar();
 
-  // Crie a consulta SQL DELETE
-  $sql = "DELETE FROM funcionario WHERE idfuncionario = $id"; // Substitua "tabela" pelo nome correto da tabela no banco de dados
+  // Crie a consulta SQL DELETE usando prepared statements
+  $sql = "DELETE FROM $tabela  WHERE $idtabela = :id";
 
-  if ($conn->query($sql) === TRUE) {
-    echo "Registro excluído com sucesso.";
+  $stmt = $conn->prepare($sql);
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+  if ($stmt->execute()) {
+    // Remova a linha de echo abaixo
+    // echo '<script>alert("Registro excluído com sucesso");</script>';
+    header("Location:./paineldeControle.php");
+    exit;
   } else {
-
-    echo "Erro ao excluir o registro: " . $conn->errorInfo();
+    echo "Erro ao excluir o registro: " . $stmt->errorInfo()[2];
   }
 }
 
-function mostrarItem($campos,$nometabela){
-   $conn = conectar();
-   $lista = $conn->query("SELECT $campos FROM $nometabela");
-   $lista -> execute();
-   if($lista->rowCount() > 0){
-      return $lista->fetchAll(PDO::FETCH_OBJ);
-      
-   }else{
-      return 'Vazio';
-   }
+
+function mostrarItem($campos, $nometabela)
+{
+  $conn = conectar();
+  $lista = $conn->query("SELECT $campos FROM $nometabela");
+  $lista->execute();
+
+  if ($lista->rowCount() > 0) {
+    return $lista->fetchAll(PDO::FETCH_OBJ);
+  } else {
+    return array(); // Retorna um array vazio quando não há resultados
+  }
 }
 ?>

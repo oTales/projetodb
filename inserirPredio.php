@@ -9,7 +9,8 @@ if (isset($_POST['enderecoPredio']) || isset($_POST['idCondominio'])) {
     echo "Por favor, preencha todos os campos";
     exit;
   } else {
-    inserirnalista('predio', 'idcondominio,EnderecoPredio', "$enderecoPredio,$idCondominio");
+    inserirnalista('predio', 'idcondominio,EnderecoPredio', "'$idCondominio','$enderecoPredio'");
+    header('Location: ./paineldeControle.php');
   }
 }
 
@@ -31,9 +32,8 @@ if (isset($_POST['enderecoPredio']) || isset($_POST['idCondominio'])) {
   <!-- inserir predio -->
   <div class="items-center grid grid-cols-2">
     <form method="post" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
-      <h3>Login do</h3>
-      <br />
-      <h1>Funcionario</h1>
+      <a href="./paineldeControle.php" class="border-b border-gray-500 hover:border-gray-700">Ir para o Painel de Controle</a>
+      <h3>Inserir Predio</h3>
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
           Endereco predio
@@ -43,7 +43,7 @@ if (isset($_POST['enderecoPredio']) || isset($_POST['idCondominio'])) {
           id="username" name="nome" type="text" placeholder="Username" />
       </div>
       <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="">
           Condominio que faz parte
         </label>
         <select name="idCondominio"
@@ -57,12 +57,13 @@ if (isset($_POST['enderecoPredio']) || isset($_POST['idCondominio'])) {
             $NomeCondominio = $item->NomeCondominio;
             ?>
             <option value="<?php echo $idcondominio ?>"><?php echo $idcondominio . ":" . $NomeCondominio ?></option>
-
+        
           <?php } ?>
         </select>
       </div>
       <div class="flex items-center justify-between">
         <button
+        type="submit"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button">
           Entrar

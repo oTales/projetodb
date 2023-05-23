@@ -1,30 +1,8 @@
 <!DOCTYPE html>
+<html lang="en">
 <?php
 include_once './controllers/funcoes.php';
-
-$timezone = new DateTimeZone('America/Sao_Paulo');
-$dataAtual = new DateTime('now', $timezone);
-$dataFormatada = $dataAtual->format('Y-m-d');
-
-
-if (isset($_POST['idsetorFuncionario']) || isset($_POST['nome']) || isset($_POST['idCondominio']) || isset($_POST['genero'])){
-  $idsetorFuncionario = $_POST['idsetorFuncionario'];
-  $nome = $_POST['nome'];
-  $genero = $_POST['genero'];
-  $idCondominio = $_POST['idCondominio'];
-  if (empty($nome) || empty($genero) || empty($idCondominio) || empty($idsetorFuncionario))  {
-    echo "Por favor, preencha todos os campos";
-    exit;
-  } else {
-    InserirFuncionario('idgenero',"$genero",'idCondominio,idsetorFuncionario,Admissao',"$idsetorFuncionario,$idCondominio,$dataFormatada" );
-  }
-}
-
 ?>
-
-
-<html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -36,7 +14,8 @@ if (isset($_POST['idsetorFuncionario']) || isset($_POST['nome']) || isset($_POST
 <body>
   <!-- INSERIR CONSTRUCAO -->
   <div class="items-center grid grid-cols-2">
-    <form method="post" action="" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+    <form method="post" action="./controllers/FuncionarioController.php" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+      <a href="./paineldeControle.php" class="border-b border-gray-500 hover:border-gray-700">Ir para o Painel de Controle</a>
       <h3>Inserir</h3>
       <br />
       <h1>Funcionario</h1>
@@ -45,9 +24,24 @@ if (isset($_POST['idsetorFuncionario']) || isset($_POST['nome']) || isset($_POST
           Nome
         </label>
         <input
-        name="nome"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="username" name="nome" type="text" placeholder="Username" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+          Sobrenome
+        </label>
+        <input
+        name="sobrenome"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="username" type="text" placeholder="Username" />
+      </div>
+      <div class="mb-6">
+        <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+          Data de Nascimento
+        </label>
+        <input type="date" name="dataNascimento" id="dataTermino" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">

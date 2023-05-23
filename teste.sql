@@ -13,7 +13,7 @@ FROM
     db_construtora.funcionario
     LEFT JOIN db_construtora.setorfuncionario ON funcionario.idsetorFuncionario = setorfuncionario.idsetorFuncionario;
 
-
+SELECT * FROM cliente;
     SELECT
     funcionario.idFuncionario,
     funcionario.IdCliente,
@@ -42,5 +42,7 @@ GROUP BY
     condominio.nomeCondominio,
     condominio.Rua,condominio.UF,condominio.Bairro,Condominio.numero;
 
+    INSERT INTO cliente(idgenero,Nome) VALUES (1,'talesiewqeqw');
+DELETE FROM db_construtora.funcionario WHERE idfuncionario = 19;
     SELECT construcao.idconstrucao,construcao.idstatusconstrucao,construcao.DataInicio,construcao.DataTermino,statusconstrucao.idstatusconstrucao,statusconstrucao.statusConstrucao FROM db_construtora.construcao
 INNER JOIN db_construtora.statusConstrucao ON construcao.idstatusConstrucao = statusconstrucao.idstatusConstrucao;

@@ -38,6 +38,7 @@ if (isset($_POST['enderecoPredio']) || isset($_POST['statusConstrucao']) || isse
   <!-- inserir predio -->
   <div class="flex items-center justify-center h-screen">
     <form method="post" action=""class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+      <a href="./paineldeControle.php" class="border-b border-gray-500 hover:border-gray-700">Ir para o Painel de Controle</a>
       <h3>Nova Construção</h3>
       <h1></h1>
       <div class="mb-4">

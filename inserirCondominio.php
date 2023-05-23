@@ -14,7 +14,8 @@ if (isset($_POST['cidade']) || isset($_POST['nomeCondominio']) || isset($_POST['
     echo "Por favor, preencha todos os campos";
     exit;
   }else{
-  inserirnalista('condominio', 'NomeCondominio,Rua,UF,Bairro,numero,cidade', [$nomeCondominio, $Rua, $UF, $Bairro, $numero, $cidade]);
+  inserirnalista('condominio', 'NomeCondominio,Rua,UF,Bairro,numero,cidade', "'$nomeCondominio','$Rua', '$UF', '$Bairro', '$numero', '$cidade'");
+    header('Location: ./paineldeControle.php');
   }
 
 }
@@ -36,6 +37,7 @@ if (isset($_POST['cidade']) || isset($_POST['nomeCondominio']) || isset($_POST['
 
   <div class="items-center grid grid-cols-2">
     <form method="post" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+      <a href="./paineldeControle.php" class="border-b border-gray-500 hover:border-gray-700">Ir para o Painel de Controle</a>
       <h3>Inserir</h3>
       <br />
       <h1>Novo Condominio</h1>

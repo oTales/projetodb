@@ -14,16 +14,29 @@ include_once './controllers/funcoes.php';
 </head>
 
 <body class="bg-slate-900">
-  <ul class="flex gap-2 justify-around text-white">
-    <li class="cursor-pointer" id="funcionario">Funcionario</li>
-    <li class="cursor-pointer" id="condominio">Condominios</li>
-    <li class="cursor-pointer" id="construcao">Construcoes</li>
-    <li class="cursor-pointer" id="predios"> Predios</li>
+  <ul class="flex gap-2 justify-around text-white items-center h-10 bg-slate-700 ">
+    <li class="cursor-pointer flex items-center" id="funcionario">Funcionario <a class="text-gray-200 ml-1 "
+        href="./inserirFuncionario.php"><img
+          class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+          src="./img/plus.svg" alt=""></a></li>
+    <li class="cursor-pointer flex items-center" id="condominio">Condominios <a class="text-gray-200 ml-1"
+        href="./inserirCondominio.php"><img
+          class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+          src="./img/plus.svg" alt=""></a></li>
+    <li class="cursor-pointer flex items-center" id="construcao">Construcoes <a class="text-gray-200 ml-1"
+        href="./inserirConstrucao.php"><img
+          class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+          src="./img/plus.svg" alt=""></a></li>
+    <li class="cursor-pointer flex items-center" id="predios"> Predios <a class="text-gray-200 ml-1"
+        href="./inserirPredio.php"><img
+          class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+          src="./img/plus.svg" alt=""></a> </li>
   </ul>
   <!-- TABELA FUNCIONARIO -->
-  <table id="tabelaFuncionario" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <a class="" href="./inserirFuncionario.php"></a>
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <table id="tabelaFuncionario"
+    class="max-w-[1000px] mt-40 w-full items-center justify-center m-auto text-sm text-left text-gray-500">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-700 text-white">
+      <a href="./index.html"><img src="./img/arrow" alt=""></a>
       <th scope="col" class="px-6 py-3" scope="col" class="px-6 py-3">idFuncionario</th>
       <th scope="col" class="px-6 py-3" scope="col" class="px-6 py-3">Funcionário</th>
       <th scope="col" class="px-6 py-3" scope="col" class="px-6 py-3">Setor</th>
@@ -43,52 +56,61 @@ include_once './controllers/funcoes.php';
     INNER JOIN db_construtora.cliente ON funcionario.IdCliente = cliente.idCliente
     INNER JOIN db_construtora.condominio ON funcionario.idcondominio = condominio.idCondominio;
 ');
-    foreach ($buscarItens as $item) {
-      $idFuncionario = $item->idFuncionario;
-      $idCliente = $item->IdCliente;
-      $nome = $item->Nome;
-      $idSetorFuncionario = $item->idsetorFuncionario;
-      $idCondominio = $item->idcondominio;
-      $nomeCondominio = $item->Condominio;
-      $setorFuncionario = $item->setorFuncionario;
-      ?>
-      <tr>
-        <td class="px-6 py-4">
-          <?php echo $idFuncionario ?>
-        </td>
-        <td class="px-6 py-4">
-          <?php echo $nome ?>
-        </td>
-        <td class="px-6 py-4">
-          <?php echo $setorFuncionario ?>
-        </td>
-        <td class="px-6 py-4" class="px-6 py-4">
-          <?php echo $nomeCondominio ?>
-        </td>
-        <td>
-          <?php
-          if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
-            // Recupere o ID do item a ser excluído
-// Substitua pelo ID correto do item a ser excluído
-        
-            // Chame a função de exclusão
-            excluirRegistro($idFuncionario);
-          } ?>
-          <form method="POST">
+    if (empty($buscarItens)) {
+    } else {
+      foreach ($buscarItens as $item) {
+        $idFuncionario = $item->idFuncionario;
+        $idCliente = $item->IdCliente;
+        $nome = $item->Nome;
+        $idSetorFuncionario = $item->idsetorFuncionario;
+        $idCondominio = $item->idcondominio;
+        $nomeCondominio = $item->Condominio;
+        $setorFuncionario = $item->setorFuncionario;
 
-            <button type="submit" name="deleteButton" value="Excluir">
-              <img src="./img/lixeira.svg" alt="">
-            </button>
-          </form>
-        </td>
-      </tr>
-    <?php } ?>
+
+        ?>
+        <tr>
+          <td class="px-6 py-4">
+            <?php echo $idFuncionario ?>
+          </td>
+          <td class="px-6 py-4">
+            <?php echo $nome ?>
+          </td>
+          <td class="px-6 py-4">
+            <?php echo $setorFuncionario ?>
+          </td>
+          <td class="px-6 py-4" class="px-6 py-4">
+            <?php echo $nomeCondominio ?>
+          </td>
+          <td>
+
+            <form method="POST">
+              <input type="hidden" name="idFuncionario" value="<?php echo $idFuncionario; ?>">
+              <button type="submit" name="deleteButton" value="Excluir">
+                <img src="./img/lixeira.svg" alt="">
+              </button>
+            </form>
+          </td>
+        </tr>
+      <?php }
+    } ?>
+    <?php
+
+
+    if (isset($_POST['deleteButton'])) {
+      $idFuncionario = $_POST['idFuncionario']; // Certifique-se de ter o valor correto do ID do funcionário aqui
+      excluirRegistro('funcionario','idfuncionario',$idFuncionario);
+    }
+
+    ?>
   </table>
 
   <!-- TABELA CONDOMINIO -->
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaCondominio" class="hidden">
-          <a class="" href="./inserirCondominio.php"></a>
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <table
+    class="max-w-[1000px] mt-40 w-full items-center justify-center m-auto text-sm text-left text-gray-500 dark:text-gray-400 hidden"
+    id="tabelaCondominio" class="hidden">
+    <a class="" href="./inserirCondominio.php"></a>
+    <thead class="text-xs text-gray-700 uppercase bg-gray-700 text-white">
       <th scope="col" class="px-6 py-3">Nome do Condominio</th>
       <th scope="col" class="px-6 py-3">Rua/Numero</th>
       <th scope="col" class="px-6 py-3">Bairro</th>
@@ -138,25 +160,32 @@ GROUP BY
         </td>
 
         <td class="px-6 py-4">
-          <?php
-          if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
-            excluirRegistro($idCondominio);
-          } ?>
-          <form method="POST">
 
-            <button type="submit" name="deleteButton" value="Excluir">
-              DELETE
+          <form method="POST">
+            <input type="hidden" name="idCondominio" value="<?php echo $idCondominio; ?>">
+            <button type="submit" name="deleteCondominio" value="Excluir">
+              <img src="./img/lixeira.svg" alt="">
             </button>
           </form>
-          UPDATE
         </td>
       </tr>
     <?php } ?>
+    <?php
+
+
+    if (isset($_POST['deleteCondominio'])) {
+      $idCondominio = $_POST['idCondominio']; // Certifique-se de ter o valor correto do ID do funcionário aqui
+      excluirRegistro('condominio','idcondominio',$idCondominio);
+    }
+
+    ?>
   </table>
   <!-- TABELA CONSTRUCOES -->
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaConstrucoes">
-          <a class="" href="./inserirConstrucao.php"></a>
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <table
+    class="max-w-[1000px] mt-40 w-full items-center justify-center m-auto text-sm text-left text-gray-500 dark:text-gray-400 hidden"
+    id="tabelaConstrucoes">
+    <a class="" href="./inserirConstrucao.php"></a>
+    <thead class="text-xs text-gray-700 uppercase bg-gray-700 text-white">
       <th scope="col" class="px-6 py-3">idConstrucao</th>
       <th scope="col" class="px-6 py-3">Data Inicio</th>
       <th scope="col" class="px-6 py-3">Data de Termino</th>
@@ -183,29 +212,32 @@ GROUP BY
           <?php echo $DataTerminmo ?>
         </td>
         <td class="px-6 py-4">
-          <?php echo $statusConstrucao ?>
+          <?php echo $statusConstrucao;?>
         </td>
         <td class="px-6 py-4">
-          <?php
-          if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
-
-            excluirRegistro($idconstrucao);
-          } ?>
           <form method="POST">
+            <input type="hidden" name="idconstrucao" value="<?php echo $idconstrucao;?>">
+              <button type="submit" name="deleteconstrucao" value="Excluir">
+                <img src="./img/lixeira.svg" alt="">
+              </button>
+            </form>
+            </td>
+            </tr>
+          <?php } ?>
+          <?php
+          if (isset($_POST['deleteconstrucao'])) {
+            $idconstrucao = $_POST['idconstrucao']; // Certifique-se de ter o valor correto do ID do funcionário aqui
+            excluirRegistro('construcao','idconstrucao',$idconstrucao);
+          }
 
-            <button type="submit" name="deleteButton" value="Excluir">
-              DELETE
-            </button>
-          </form>
-          UPDATE
-        </td>
-      </tr>
-    <?php } ?>
+          ?>
   </table>
   <!-- TABELA PREDIOS -->
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaPredios" >
-          <a class="" href="./inserirPredio.php">NOVO PREDIO +</a>
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <table
+    class="max-w-[1000px] mt-40 w-full items-center justify-center m-auto text-sm text-left text-gray-500 dark:text-gray-400 hidden"
+    id="tabelaPredios">
+
+    <thead class="text-xs text-gray-700 uppercase bg-gray-700 text-white">
 
       <th scope="col" class="px-6 py-3">idPredio</th>
       <th scope="col" class="px-6 py-3">Condominio que faz parte</th>
@@ -235,24 +267,24 @@ GROUP BY
           <?php echo $EnderecoPredio ?>
         </td>
         <td class="px-6 py-4">
-          <?php
-          if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
-            // Recupere o ID do item a ser excluído
-// Substitua pelo ID correto do item a ser excluído
-        
-            // Chame a função de exclusão
-            excluirRegistro($idpredio);
-          } ?>
-          <form method="POST">
-
-            <button type="submit" name="deleteButton" value="Excluir">
-              DELETE
+         <form method="POST">
+            <input type="hidden" name="idpredio value="<?php echo $idpredio; ?>>
+            <button type="submit" name="deletepredio" value="Excluir">
+              <img src="./img/lixeira.svg" alt="">
             </button>
           </form>
-          UPDATE
-        </td>
-      </tr>
-    <?php } ?>
+          </td>
+          </tr>
+        <?php } ?>
+        <?php
+
+
+        if (isset($_POST['deletepredio'])) {
+          $idpredio = $_POST['idpredio']; // Certifique-se de ter o valor correto do ID do funcionário aqui
+          excluirRegistro('predio','idpredio',$idpredio);
+        }
+
+        ?>
   </table>
 
   <script src="./scripts/painelControle.js"></script>
