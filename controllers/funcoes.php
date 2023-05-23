@@ -10,13 +10,15 @@ function conectar()
   }
   return $conn;
 }
+
 function inserirnalista($nometabela, $camposTabela, $valores)
 {
   $conn = conectar();
-  $placeholders = rtrim(str_repeat('?,', count($valores)), ',');
+  $valoresArray = explode(',', $valores); // Converter a string de valores em uma array
+  $placeholders = rtrim(str_repeat('?,', count($valoresArray)), ',');
   $sql = "INSERT INTO $nometabela ($camposTabela) VALUES ($placeholders)";
   $lista = $conn->prepare($sql);
-  $lista->execute($valores);
+  $lista->execute($valoresArray);
   if ($lista->rowCount() > 0) {
     return 'Cadastrado';
   } else {

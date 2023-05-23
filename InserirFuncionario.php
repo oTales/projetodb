@@ -4,17 +4,19 @@ include_once './controllers/funcoes.php';
 
 $timezone = new DateTimeZone('America/Sao_Paulo');
 $dataAtual = new DateTime('now', $timezone);
-$dataFormatada = $dataAtual->format('Y-m-d H:i:s');
+$dataFormatada = $dataAtual->format('Y-m-d');
 
 
-if (isset($_POST['setor']) || isset($_POST['senha'])) {
-  $senha = $_POST['senha'];
-  $email = $_POST['email'];
-  if (empty($senha) || empty($email)) {
+if (isset($_POST['idsetorFuncionario']) || isset($_POST['nome']) || isset($_POST['idCondominio']) || isset($_POST['genero'])){
+  $idsetorFuncionario = $_POST['idsetorFuncionario'];
+  $nome = $_POST['nome'];
+  $genero = $_POST['genero'];
+  $idCondominio = $_POST['idCondominio'];
+  if (empty($nome) || empty($genero) || empty($idCondominio) || empty($idsetorFuncionario))  {
     echo "Por favor, preencha todos os campos";
     exit;
   } else {
-    InserirFuncionario('idcliente,idgenero',"$genero",'Admissao',"$dataFormatada" );
+    InserirFuncionario('idgenero',"$genero",'idCondominio,idsetorFuncionario,Admissao',"$idsetorFuncionario,$idCondominio,$dataFormatada" );
   }
 }
 
@@ -32,17 +34,9 @@ if (isset($_POST['setor']) || isset($_POST['senha'])) {
 </head>
 
 <body>
-  <ul>
-    <li>Condominio</li>
-    <li>predio</li>
-    <li>Engenheiro</li>
-    <li>Arquiteto</li>
-  </ul>
-  <!-- INSERIR ENGENHEIRO -->
-
   <!-- INSERIR CONSTRUCAO -->
   <div class="items-center grid grid-cols-2">
-    <form method="post" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+    <form method="post" action="" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
       <h3>Inserir</h3>
       <br />
       <h1>Funcionario</h1>
@@ -51,22 +45,15 @@ if (isset($_POST['setor']) || isset($_POST['senha'])) {
           Nome
         </label>
         <input
+        name="nome"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="username" name="nome" type="text" placeholder="Username" />
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-          senha
-        </label>
-        <input name=""
-          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password" type="password" placeholder="******************" />
-      </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
           Seu Setor
         </label>
-        <select name="setor"
+        <select name="idsetorFuncionario"
           class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="text" placeholder="escolha seu setor">
 
@@ -83,7 +70,7 @@ if (isset($_POST['setor']) || isset($_POST['senha'])) {
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
           Condominio que faz parte
         </label>
-        <select name="Condominio"
+        <select name="idCondominio"
           class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="text" placeholder="escolha seu setor">
 
@@ -93,7 +80,7 @@ if (isset($_POST['setor']) || isset($_POST['senha'])) {
             $idcondominio = $item->idcondominio;
             $NomeCondominio = $item->NomeCondominio;
             ?>
-            <option value="<?php echo $idcondominio ?>"><?php echo $NomeCondominio ?></option>
+            <option value="<?php echo $idcondominio ?>"><?php echo$idcondominio .":".$NomeCondominio ?></option>
 
           <?php } ?>
         </select>
@@ -102,7 +89,7 @@ if (isset($_POST['setor']) || isset($_POST['senha'])) {
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
           Genero
         </label>
-        <select name="Condominio"
+        <select name="genero"
           class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="text" placeholder="escolha seu setor">
 
@@ -121,15 +108,14 @@ if (isset($_POST['setor']) || isset($_POST['senha'])) {
       </div>
       <div class="flex items-center justify-between">
         <button
+        type="submit"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button">
           Entrar
         </button>
       </div>
     </form>
-    <div class="left-0">
-      <img class="object-cover w-screen" src="./img/funcionario.png" alt="" />
-    </div>
+    
   </div>
 </body>
 

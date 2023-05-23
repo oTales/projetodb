@@ -22,7 +22,7 @@ include_once './controllers/funcoes.php';
   </ul>
   <!-- TABELA FUNCIONARIO -->
   <table id="tabelaFuncionario" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-
+                <a class="" href="./inserirFuncionario.php"></a>
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <th scope="col" class="px-6 py-3" scope="col" class="px-6 py-3">idFuncionario</th>
       <th scope="col" class="px-6 py-3" scope="col" class="px-6 py-3">Funcionário</th>
@@ -77,10 +77,9 @@ include_once './controllers/funcoes.php';
           <form method="POST">
 
             <button type="submit" name="deleteButton" value="Excluir">
-              DELETE
+              <img src="./img/lixeira.svg" alt="">
             </button>
           </form>
-          UPDATE
         </td>
       </tr>
     <?php } ?>
@@ -88,7 +87,7 @@ include_once './controllers/funcoes.php';
 
   <!-- TABELA CONDOMINIO -->
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaCondominio" class="hidden">
-
+          <a class="" href="./inserirCondominio.php"></a>
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <th scope="col" class="px-6 py-3">Nome do Condominio</th>
       <th scope="col" class="px-6 py-3">Rua/Numero</th>
@@ -141,10 +140,6 @@ GROUP BY
         <td class="px-6 py-4">
           <?php
           if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
-            // Recupere o ID do item a ser excluído
-// Substitua pelo ID correto do item a ser excluído
-        
-            // Chame a função de exclusão
             excluirRegistro($idCondominio);
           } ?>
           <form method="POST">
@@ -159,7 +154,8 @@ GROUP BY
     <?php } ?>
   </table>
   <!-- TABELA CONSTRUCOES -->
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaConstrucoes" class="hidden">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaConstrucoes">
+          <a class="" href="./inserirConstrucao.php"></a>
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <th scope="col" class="px-6 py-3">idConstrucao</th>
       <th scope="col" class="px-6 py-3">Data Inicio</th>
@@ -178,10 +174,10 @@ GROUP BY
       ?>
       <tr>
         <td class="px-6 py-4">
-          <?php echo $idconstrucao?>
+          <?php echo $idconstrucao ?>
         </td>
         <td class="px-6 py-4">
-          <?php echo $DataInicio?>
+          <?php echo $DataInicio ?>
         </td>
         <td class="px-6 py-4">
           <?php echo $DataTerminmo ?>
@@ -192,10 +188,7 @@ GROUP BY
         <td class="px-6 py-4">
           <?php
           if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
-            // Recupere o ID do item a ser excluído
-// Substitua pelo ID correto do item a ser excluído
-        
-            // Chame a função de exclusão
+
             excluirRegistro($idconstrucao);
           } ?>
           <form method="POST">
@@ -210,8 +203,8 @@ GROUP BY
     <?php } ?>
   </table>
   <!-- TABELA PREDIOS -->
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaPredios" class="hidden">
-
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden" id="tabelaPredios" >
+          <a class="" href="./inserirPredio.php">NOVO PREDIO +</a>
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
       <th scope="col" class="px-6 py-3">idPredio</th>
@@ -221,9 +214,11 @@ GROUP BY
     </thead>
 
     <?php
-    $buscarItens = mostrarItem('predio.idpredio,predio.idcondominio,predio.EnderecoPredio,condominio.idcondominio,condominio.NomeCondominio', 
-    'predio INNER JOIN condominio ON predio.idcondominio = condominio.idcondominio;
-');
+    $buscarItens = mostrarItem(
+      'predio.idpredio,predio.idcondominio,predio.EnderecoPredio,condominio.idcondominio,condominio.NomeCondominio',
+      'predio INNER JOIN condominio ON predio.idcondominio = condominio.idcondominio;
+'
+    );
     foreach ($buscarItens as $item) {
       $idpredio = $item->idpredio;
       $nomeCondominio = $item->NomeCondominio;
@@ -237,7 +232,7 @@ GROUP BY
           <?php echo $nomeCondominio ?>
         </td>
         <td class="px-6 py-4">
-          <?php echo $EnderecoPredio?>
+          <?php echo $EnderecoPredio ?>
         </td>
         <td class="px-6 py-4">
           <?php

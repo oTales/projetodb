@@ -97,9 +97,6 @@ if (isset($_POST['cidade']) || isset($_POST['nomeCondominio']) || isset($_POST['
         </button>
       </div>
     </form>
-    <div class="left-0">
-      <img class="object-cover w-screen" src="./img/funcionario.png" alt="" />
-    </div>
   </div>
 
 </body>
