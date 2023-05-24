@@ -14,7 +14,9 @@ include_once './controllers/funcoes.php';
 </head>
 
 <body class="bg-slate-900">
+  
   <ul class="flex gap-2 justify-around text-white items-center h-10 bg-slate-700 ">
+    <li><a class="text-white mr-2 items-center"  href="./loginEquipe.php"><img src="./img/arrow.svg" alt="">Voltar</a> </li>
     <li class="cursor-pointer flex items-center" id="funcionario">Funcionario <a class="text-gray-200 ml-1 "
         href="./inserirFuncionario.php"><img
           class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
@@ -45,26 +47,27 @@ include_once './controllers/funcoes.php';
     </thead>
 
     <?php
-    $buscarItens = mostrarItem('funcionario.idFuncionario,
-    funcionario.IdCliente,
-    cliente.nome AS Nome,
-    funcionario.idsetorFuncionario,
-    funcionario.idcondominio,
-    condominio.nomeCondominio AS Condominio,
-    setorfuncionario.setorFuncionario', 'db_construtora.funcionario
-    INNER JOIN db_construtora.setorfuncionario ON funcionario.idsetorFuncionario = setorfuncionario.idsetorFuncionario
-    INNER JOIN db_construtora.cliente ON funcionario.IdCliente = cliente.idCliente
-    INNER JOIN db_construtora.condominio ON funcionario.idcondominio = condominio.idCondominio;
-');
+    $buscarItens = mostrarItem('tc.idcliente,
+tc.nome,
+tco.NomeCondominio,
+tf.idcliente,
+tf.idsetorFuncionario,
+tf.idcondominio,
+tsf.setorFuncionario,
+tco.NomeCondominio,
+tf.idFuncionario,
+tco.idcondominio,
+tsf.idsetorFuncionario', 'funcionario as tf 
+INNER JOIN cliente as tc ON tf.idcliente = tc.idcliente
+INNER JOIN setorfuncionario as tsf ON tf.idsetorFuncionario = tsf.idsetorFuncionario
+INNER JOIN condominio as tco on tf.idcondominio = tco.idcondominio');
     if (empty($buscarItens)) {
     } else {
       foreach ($buscarItens as $item) {
         $idFuncionario = $item->idFuncionario;
-        $idCliente = $item->IdCliente;
-        $nome = $item->Nome;
+        $nome = $item->nome;
         $idSetorFuncionario = $item->idsetorFuncionario;
-        $idCondominio = $item->idcondominio;
-        $nomeCondominio = $item->Condominio;
+        $nomeCondominio = $item->NomeCondominio;
         $setorFuncionario = $item->setorFuncionario;
 
 
@@ -100,6 +103,7 @@ include_once './controllers/funcoes.php';
     if (isset($_POST['deleteButton'])) {
       $idFuncionario = $_POST['idFuncionario']; // Certifique-se de ter o valor correto do ID do funcionário aqui
       excluirRegistro('funcionario','idfuncionario',$idFuncionario);
+     header("Refresh:1; url=./paineldeControle.php");
     }
 
     ?>
@@ -176,6 +180,7 @@ GROUP BY
     if (isset($_POST['deleteCondominio'])) {
       $idCondominio = $_POST['idCondominio']; // Certifique-se de ter o valor correto do ID do funcionário aqui
       excluirRegistro('condominio','idcondominio',$idCondominio);
+     header("Refresh:1; url=./paineldeControle.php");
     }
 
     ?>
@@ -228,6 +233,7 @@ GROUP BY
           if (isset($_POST['deleteconstrucao'])) {
             $idconstrucao = $_POST['idconstrucao']; // Certifique-se de ter o valor correto do ID do funcionário aqui
             excluirRegistro('construcao','idconstrucao',$idconstrucao);
+           header("Refresh:1; url=./paineldeControle.php");
           }
 
           ?>
@@ -282,6 +288,8 @@ GROUP BY
         if (isset($_POST['deletepredio'])) {
           $idpredio = $_POST['idpredio']; // Certifique-se de ter o valor correto do ID do funcionário aqui
           excluirRegistro('predio','idpredio',$idpredio);
+         header("Refresh:1; url=./paineldeControle.php");
+          
         }
 
         ?>

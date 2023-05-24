@@ -43,14 +43,11 @@ function verificacao($setor)
     case 1;
       header('Location: ./paineldeControle.php');
       break;
-    case 3;
-      header('Location: ./financeiro.php');
-      break;
     case 5;
-      header('Location: ./Engenheiro.php');
+      header('Location: ./Projetos.php');
       break;
     case 6;
-      header('Location: ./Arquiteto');
+      header('Location: ./Projetos.php');
       break;
   }
 }
@@ -65,9 +62,7 @@ function excluirRegistro($tabela, $idtabela, $id)
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
   if ($stmt->execute()) {
-    // Remova a linha de echo abaixo
-    // echo '<script>alert("Registro excluído com sucesso");</script>';
-    header("Location:./paineldeControle.php");
+    
     exit;
   } else {
     echo "Erro ao excluir o registro: " . $stmt->errorInfo()[2];
